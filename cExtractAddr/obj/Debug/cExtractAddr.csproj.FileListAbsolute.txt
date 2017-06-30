@@ -1,0 +1,10 @@
+C:\teh\@Test\extractAddress\cExtractAddr\bin\Debug\cExtractAddr.dll
+C:\teh\@Test\extractAddress\cExtractAddr\bin\Debug\cExtractAddr.pdb
+C:\teh\@Test\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.csprojResolveAssemblyReference.cache
+C:\teh\@Test\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.dll
+C:\teh\@Test\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.pdb
+C:\teh\#Projects\extractAddress\cExtractAddr\bin\Debug\cExtractAddr.dll
+C:\teh\#Projects\extractAddress\cExtractAddr\bin\Debug\cExtractAddr.pdb
+C:\teh\#Projects\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.csprojResolveAssemblyReference.cache
+C:\teh\#Projects\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.dll
+C:\teh\#Projects\extractAddress\cExtractAddr\obj\Debug\cExtractAddr.pdb

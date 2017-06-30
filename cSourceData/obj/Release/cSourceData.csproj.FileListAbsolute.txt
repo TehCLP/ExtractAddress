@@ -1,0 +1,10 @@
+C:\teh\MKTEnquiry\_Referance\cSourceData\bin\Release\cSourceData.dll
+C:\teh\MKTEnquiry\_Referance\cSourceData\bin\Release\cSourceData.pdb
+C:\teh\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.csprojResolveAssemblyReference.cache
+C:\teh\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.dll
+C:\teh\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.pdb
+C:\teh\#Projects\MKTEnquiry\_Referance\cSourceData\bin\Release\cSourceData.dll
+C:\teh\#Projects\MKTEnquiry\_Referance\cSourceData\bin\Release\cSourceData.pdb
+C:\teh\#Projects\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.csprojResolveAssemblyReference.cache
+C:\teh\#Projects\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.dll
+C:\teh\#Projects\MKTEnquiry\_Referance\cSourceData\obj\Release\cSourceData.pdb
