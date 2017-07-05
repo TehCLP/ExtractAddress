@@ -115,7 +115,7 @@ namespace cExtractAddr
                     _dr["FullAddress"] = _addr;
                     if (_addr.isAddressEng())
                     {
-                        _province = extractProvince(ref _addr);
+                        _province = extractProvince_Eng(_addr);
                         _dr["Province"] = _province[0];
                         _dr["ProvinceCode"] = _province[1];
 
@@ -224,30 +224,32 @@ namespace cExtractAddr
                 string _tmp = string.Empty;
                 List<models.Provinces> _li;
                 int _len = province.Length;
-
-                // #forward search
-                for (int i = 1; i <= _len; i++)
+                if (_len > 1)
                 {
-                    _tmp = province.Substring(0, i);
-                    _li = _liProvince.Where(p => p.ProvinceName.StartsWith(_tmp)).ToList();
-                    if (_li.Count == 1)
+                    // #forward search
+                    for (int i = 2; i <= _len; i++)
                     {
-                        _province = _li[0].ProvinceName;
-                        break;
-                    }
-                }
-
-                if (_province.isEmpty())
-                {                    
-                    // #backward search
-                    for (int i = _len - 1; i > 0; i--)
-                    {
-                        _tmp = province.Substring(i);
-                        _li = _liProvince.Where(p => p.ProvinceName.EndsWith(_tmp)).ToList();
+                        _tmp = province.Substring(0, i);
+                        _li = _liProvince.Where(p => p.ProvinceName.StartsWith(_tmp)).ToList();
                         if (_li.Count == 1)
                         {
                             _province = _li[0].ProvinceName;
                             break;
+                        }
+                    }
+
+                    if (_province.isEmpty())
+                    {                    
+                        // #backward search
+                        for (int i = _len - 2; i > 0; i--)
+                        {
+                            _tmp = province.Substring(i);
+                            _li = _liProvince.Where(p => p.ProvinceName.EndsWith(_tmp)).ToList();
+                            if (_li.Count == 1)
+                            {
+                                _province = _li[0].ProvinceName;
+                                break;
+                            }
                         }
                     }
                 }
@@ -321,15 +323,15 @@ namespace cExtractAddr
                                     .Select(d => d.District)
                                     .FirstOrDefault();
 
-                    if (_district.isEmpty())
+                    int _len = amphor.Length;
+                    if (_district.isEmpty() && _len > 1)
                     {
                         _district = string.Empty;
                         string _tmp = string.Empty;
                         List<string> _li;
-                        int _len = amphor.Length;
-
+                        
                         // #forward search
-                        for (int i = 1; i <= _len; i++)
+                        for (int i = 2; i <= _len; i++)
                         {
                             _tmp = amphor.Substring(0, i);
                             _li = _provinceList.liDistrict
@@ -346,7 +348,7 @@ namespace cExtractAddr
                         if (_district.isEmpty())
                         {
                             // #backward search
-                            for (int i = _len - 1; i > 0; i--)
+                            for (int i = _len - 2; i > 0; i--)
                             {
                                 _tmp = amphor.Substring(i);
                                 _li = _provinceList.liDistrict
@@ -430,15 +432,15 @@ namespace cExtractAddr
                                         .Select(s => s.SubDistrict)
                                         .FirstOrDefault();
 
-                    if (_subDistrict.isEmpty())
+                    int _len = tambon.Length;
+                    if (_subDistrict.isEmpty() && _len > 1)
                     {
                         _subDistrict = string.Empty;
                         string _tmp = string.Empty;
                         List<string> _li;
-                        int _len = tambon.Length;
-
+                        
                         // #forward search
-                        for (int i = 1; i <= tambon.Length; i++)
+                        for (int i = 2; i <= tambon.Length; i++)
                         {
                             _tmp = tambon.Substring(0, i);
                             _li = _liSubDistrict
@@ -455,7 +457,7 @@ namespace cExtractAddr
                         if (_subDistrict.isEmpty())
                         {
                             // #backward search
-                            for (int i = _len - 1; i > 0; i--)
+                            for (int i = _len - 2; i > 0; i--)
                             {
                                 _tmp = tambon.Substring(i);
                                 _li = _liSubDistrict
