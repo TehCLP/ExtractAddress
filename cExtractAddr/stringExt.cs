@@ -24,6 +24,13 @@ namespace cExtractAddr
                            .Replace("ถ. ", "ถ.")
                            .Replace("ม. ", "ม.")
                            .Trim();
+                
+                // clear inline postcode
+                string _postCode = addr.Split(' ').Last();
+                if (Regex.IsMatch(_postCode, "[0-9]+"))
+                {
+                    addr = addr.Substring(0, addr.Length - _postCode.Length).Trim();
+                }
             }
             return addr;
         }
