@@ -286,14 +286,34 @@ namespace cExtractAddr
             if (_amphor.isNotEmpty())
             {
                 _rawAmphor = _amphor;
+                if (_amphor.StartsWith("เขต/เขต"))
+                {
+                    addr = addr.Replace("เขต/เขต", "เขต/แขวง");
 
-                _pattern = "เขต|อำเภอ|กิ่งอำเภอ|อ\\.";
-                _amphor = Regex.Replace(_amphor, _pattern, "");
+                    _rawAmphor = _rawAmphor.Replace("/เขต", "/แขวง");
+                    _amphor = _amphor.Replace("เขต/เขต", "").Trim();
+                }
+                else if (_amphor.StartsWith("เขต")) // #prevent replace case : อ.สนามชัยเขต
+                {
+                    _amphor = _amphor.Substring(3).Trim();
+                }
+                else
+                {
+                    _pattern = "อำเภอ|กิ่งอำเภอ|อ\\.";
+                    _amphor = Regex.Replace(_amphor, _pattern, "").Trim();
+                }
             }
             else
             {
                 // #get Last word 
                 _rawAmphor = _amphor = addr.getLastSplitBySpace(); 
+                if (_amphor.StartsWith("แขวง/แขวง"))
+                {
+                    addr = addr.Replace("แขวง/แขวง", "เขต/แขวง");
+
+                    _rawAmphor = _rawAmphor.Replace("แขวง/", "เขต/");
+                    _amphor = _amphor.Replace("แขวง/แขวง", "").Trim();
+                }
             }
 
             if (_amphor == "เมือง")
@@ -304,6 +324,12 @@ namespace cExtractAddr
             _amphor = searchAmphorInDB(_amphor, provinceCode);
             if (_amphor.isNotEmpty())
             {
+                // #case district and subdistrict name same
+                if (_rawAmphor.StartsWith("เขต/แขวง"))
+                {
+                    _rawAmphor = "เขต/";
+                }
+                
                 // #remove Amphor in address 
                 addr = addr.removeWordInString(_rawAmphor);
             }
@@ -387,17 +413,18 @@ namespace cExtractAddr
             {
                 _rawTambon = _tambon;
 
-                if (_tambon == "แขวง/")
+                if (Regex.IsMatch(_tambon, "(แขวง|ตำบล|ต\\.)/")) // #case district and subdistrict name same
                 {
-                    _tambon = string.Format("แขวง{0}", amphor);
-                }
-                else if (Regex.IsMatch(_tambon, "(ตำบล|ต\\.)/"))
+                    _tambon = amphor;
+                } 
+                else if (_tambon.StartsWith("แขวง") || _tambon.StartsWith("ตำบล")) // #prevent replace case : ต.สามตำบล
                 {
-                    _tambon = string.Format("ตำบล{0}", amphor);
+                    _tambon = _tambon.Substring(4).Trim();
                 }
-
-                _pattern = "แขวง|ตำบล|ต\\.";
-                _tambon = Regex.Replace(_tambon, _pattern, "");
+                else if (_tambon.StartsWith("ต."))
+                {
+                    _tambon = _tambon.Replace("ต.", "").Trim();
+                } 
             }
             else
             {
