@@ -166,7 +166,7 @@ namespace cExtractAddr
             string _provinceCode = string.Empty;
             string _rawProvince = string.Empty;
 
-            string _pattern = "( กรุงเทพมหานคร| กรุงเทพฯ?| กทม\\.?| ก.ท.ม\\.?)|(( จังหวัด| จ\\.)[\\S]{1,})";  
+            string _pattern = "( กรุงเทพมหานคร| กรุงเทพฯ?| กทม\\.?| ก.ท.ม\\.?)|(( จังหวัด[ ]?| จ\\.)[\\S]{1,})";  
             MatchCollection _match = Regex.Matches(addr, _pattern);
             if (_match.Count > 0)
             {
@@ -543,7 +543,7 @@ namespace cExtractAddr
         {
             string _floor = string.Empty;
 
-            string _pattern = "((และ)?ชั้น(ที่)?( )?)[\\dA-Z]+\\w*(( )?(และ|[,\\-])( )?\\d+)*(( )?(\\(?(โซน|ส่วน)[\\p{L}\\p{Mn}\\-,]+\\)?|โซน \\w+))?";
+            string _pattern = "((และ)?ชั้น(ที่)?[ ]?)[\\dA-Z]+\\w*([ ]?(และ|[,\\-])[ ]?\\d+)*([ ]?(\\(?(โซน|ส่วน)[\\p{L}\\p{Mn}\\-,]+\\)?|โซน \\w+))?";
             MatchCollection _matches = Regex.Matches(addr, _pattern);
             if (_matches.Count > 0)
             {
@@ -597,7 +597,7 @@ namespace cExtractAddr
         {
             string _no = string.Empty;
 
-            string _pattern = "(เลขที่ )[\\d]+(( )?[0-9,./\\-\\(\\)]+)*";
+            string _pattern = "(เลขที่ )[\\d]+([ ]?[0-9,./\\-\\(\\)]+)*";
             addr = addr.removeSpaceBetweenWords(_pattern);
 
             _pattern = "เลขที่[\\d]+([0-9,./\\-\\(\\)]+)*";
@@ -612,7 +612,7 @@ namespace cExtractAddr
             }
             else
             {
-                _pattern = "[0-9]+(( )?[0-9,./\\-\\(\\)]+)*";
+                _pattern = "[0-9]+([ ]?[0-9,./\\-\\(\\)]+)*";
                 addr = addr.removeSpaceBetweenWords(_pattern);
 
                 int _n = -1;
