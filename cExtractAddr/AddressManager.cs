@@ -166,7 +166,7 @@ namespace cExtractAddr
             string _provinceCode = string.Empty;
             string _rawProvince = string.Empty;
 
-            string _pattern = "( กรุงเทพมหานคร| กรุงเทพฯ?| กทม\\.?| ก.ท.ม\\.?)|(( จังหวัด[ ]?| จ\\.)[\\S]{1,})";  
+            string _pattern = "( กรุงเทพมหานคร| กรุงเทพฯ?| กทม\\.?| ก\\.ท\\.ม\\.?)|(( จังหวัด[ ]?| จ\\.)[\\S]{1,})";  
             MatchCollection _match = Regex.Matches(addr, _pattern);
             if (_match.Count > 0)
             {
@@ -177,7 +177,7 @@ namespace cExtractAddr
             {
                 _rawProvince = _province; // #for remove Province in address
 
-                _pattern = "กรุงเทพมหานคร|กรุงเทพฯ?|กทม\\.?|ก.ท.ม\\.?"; 
+                _pattern = "กรุงเทพมหานคร|กรุงเทพฯ?|กทม\\.?|ก\\.ท\\.ม\\.?"; 
                 if (Regex.IsMatch(_province, _pattern))
                 {
                     _province = "กรุงเทพมหานคร";
