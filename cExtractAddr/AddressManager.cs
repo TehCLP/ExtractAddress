@@ -166,7 +166,7 @@ namespace cExtractAddr
             string _provinceCode = string.Empty;
             string _rawProvince = string.Empty;
 
-            string _pattern = "( กรุงเทพมหานคร| กรุงเทพฯ?| กทม\\.?| ก\\.ท\\.ม\\.?)|(( จังหวัด[ ]?| จ\\.)[\\S]{1,})";  
+            string _pattern = "( กรุงเทพมหานคร| กรุงเทพ[ ]?ฯ?| กทม\\.?| ก\\.ท\\.ม\\.?)|(กรุงเทพ[ ]?ฯ?|กทม\\.?|ก\\.ท\\.ม\\.?| bangkok\\.?| bkk\\.?)$|(( จังหวัด[ ]?| จ\\.)[\\S]{1,})|((จ\\.)[\\S]{1,})$";  
             MatchCollection _match = Regex.Matches(addr, _pattern);
             if (_match.Count > 0)
             {
@@ -177,7 +177,7 @@ namespace cExtractAddr
             {
                 _rawProvince = _province; // #for remove Province in address
 
-                _pattern = "กรุงเทพมหานคร|กรุงเทพฯ?|กทม\\.?|ก\\.ท\\.ม\\.?"; 
+                _pattern = "กรุงเทพมหานคร|กรุงเทพ[ ]?ฯ?|กทม\\.?|ก\\.ท\\.ม\\.?|bangkok\\.?|bkk\\.?"; 
                 if (Regex.IsMatch(_province, _pattern))
                 {
                     _province = "กรุงเทพมหานคร";
@@ -189,7 +189,9 @@ namespace cExtractAddr
 
                 _province = searchProvinceInDB(_province); 
             }
-            else
+            
+            // #case : บ.สยามโต๊โต อุตสาหะ จ.ก. 69/96 นิคมอมตะนคร อ.พานทอง ชลบุรี => จ.ก. : (searchInDB) => empty
+            if (_province.isEmpty())
             {
                 // #get Last word for check in database 
                 _rawProvince = addr.getLastSplitBySpace();
@@ -202,7 +204,7 @@ namespace cExtractAddr
                 _provinceCode = getProvinceCode(_province);
 
                 // #remove Province in address 
-                addr = addr.removeWordInString(_rawProvince);
+                addr = addr.removeWordInString(_rawProvince, true);
             }
 
             return new string[] 
@@ -276,7 +278,7 @@ namespace cExtractAddr
             string _pattern = "(เขต |อำเภอ |กิ่งอำเภอ )[\\S]{1,}"; // #case : อำเภอ เมือง
             addr =  addr.removeSpaceBetweenWords(_pattern); 
                     
-            _pattern = "(เขต|อำเภอ|กิ่งอำเภอ|อ\\.)[\\S]{1,}";
+            _pattern = "(เขต|อำเภอ|กิ่งอำเภอ|อ\\.| อ )[\\S]{1,}";
             MatchCollection _match = Regex.Matches(addr, _pattern);
             if (_match.Count > 0)
             {
@@ -299,7 +301,7 @@ namespace cExtractAddr
                 }
                 else
                 {
-                    _pattern = "อำเภอ|กิ่งอำเภอ|อ\\.";
+                    _pattern = "อำเภอ|กิ่งอำเภอ|อ |อ\\.";
                     _amphor = Regex.Replace(_amphor, _pattern, "").Trim();
                 }
             }
@@ -331,7 +333,7 @@ namespace cExtractAddr
                 }
                 
                 // #remove Amphor in address 
-                addr = addr.removeWordInString(_rawAmphor);
+                addr = addr.removeWordInString(_rawAmphor, true);
             }
 
             return _amphor;
@@ -402,7 +404,7 @@ namespace cExtractAddr
             string _pattern = "(แขวง |ตำบล )[\\S]{1,}"; // #case : ตำบล คลองสาม
             addr = addr.removeSpaceBetweenWords(_pattern);
 
-            _pattern = "(แขวง|ตำบล|ต\\.)[\\S]{1,}"; 
+            _pattern = "(แขวง|ตำบล|ต\\.| ต )[\\S]{1,}"; 
             MatchCollection _match = Regex.Matches(addr, _pattern);
             if (_match.Count > 0)
             {
@@ -421,9 +423,9 @@ namespace cExtractAddr
                 {
                     _tambon = _tambon.Substring(4).Trim();
                 }
-                else if (_tambon.StartsWith("ต."))
+                else if (_tambon.StartsWith("ต.") || _tambon.StartsWith("ต "))
                 {
-                    _tambon = _tambon.Replace("ต.", "").Trim();
+                    _tambon = _tambon.Substring(2).Trim();
                 } 
             }
             else
@@ -436,7 +438,7 @@ namespace cExtractAddr
             if (_tambon.isNotEmpty())
             {
                 // #remove Tambon in address 
-                addr = addr.removeWordInString(_rawTambon);
+                addr = addr.removeWordInString(_rawTambon, true);
             }
 
             return _tambon;
