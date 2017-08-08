@@ -60,12 +60,26 @@ namespace cExtractAddr
             return !string.IsNullOrEmpty(str);
         }
 
-        public static string removeWordInString(this string str, string wordToRemove)
+        public static string removeWordInString(this string str, string wordToRemove, bool isLastWordOnly = false)
         {
             string _tmp = str;
             if (wordToRemove.isNotEmpty())
             {
-                _tmp = _tmp.Replace(wordToRemove, string.Empty).Trim();
+                if (isLastWordOnly)
+                {
+                    MatchCollection _matches = Regex.Matches(str, wordToRemove);
+                    if (_matches.Count > 0)
+                    {
+                        int _i = _matches[_matches.Count - 1].Index;
+                        _tmp = _tmp.Remove(_i, wordToRemove.Length);                        
+                    }
+                }
+                else
+                {
+                    _tmp = _tmp.Replace(wordToRemove, string.Empty);
+                }
+
+                _tmp = _tmp.Trim();
             }
             return _tmp;
         }
